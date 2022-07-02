@@ -3,9 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Domain\Dog\Commands\CreateDogCommand;
+use App\Models\Dog;
 use Ecotone\Modelling\CommandBus;
+use Ecotone\Modelling\QueryBus;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class CreateDog extends Command
 {
@@ -15,10 +18,11 @@ class CreateDog extends Command
 
     public function handle(CommandBus $commandBus): int
     {
+        $dogId = Str::uuid();
         $commandBus->send(
             new CreateDogCommand(
-                dogId: Str::uuid(),
-                dogName: 'Fido'
+                dogId: $dogId,
+                dogName: 'Fido_' . Uuid::uuid4()->toString()
             )
         );
 
